@@ -1,0 +1,22 @@
+name: "detection_model"
+platform: "onnxruntime_onnx"
+max_batch_size: 8  # Allows batching up to size 8
+input [
+    {
+        name: "input"
+        data_type: TYPE_FP32
+        dims: [3, -1, -1]  # Dynamic height and width
+    }
+]
+output [
+    {
+        name: "output"
+        data_type: TYPE_FP32
+        dims: [-1, -1, 2]  # Dynamic height and width with 2 channels
+    }
+]
+dynamic_batching {
+  preferred_batch_size: [1, 2, 4, 8]  # Preferred batch sizes
+  max_queue_delay_microseconds: 100  # Queue delay in microseconds
+}
+
